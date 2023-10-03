@@ -6,6 +6,7 @@ docker-compose exec ceph bash
 /docker/aws/bucket.py -h
 """
 
+
 import argparse
 import sys
 
@@ -29,7 +30,7 @@ s3 = boto3.resource('s3',
 
 if args.action == 'create':
     for bucket_index in range(args.offset, args.offset + args.amount):
-        bucket_name = 'bucket{}'.format(bucket_index)
+        bucket_name = f'bucket{bucket_index}'
         try:
             bucket = s3.create_bucket(Bucket=bucket_name)
         except ResponseParserError:
@@ -38,7 +39,7 @@ if args.action == 'create':
 
         if args.objects > 0:
             for obj_index in range(args.objects):
-                object_name = 'obj{}'.format(obj_index)
+                object_name = f'obj{obj_index}'
                 s3.Object(bucket_name, object_name).put(Body=open(sys.argv[0], 'rb'))
                 print("Object created:", object_name)
 
